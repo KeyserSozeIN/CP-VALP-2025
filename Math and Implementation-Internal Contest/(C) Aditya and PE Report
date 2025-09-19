@@ -1,0 +1,44 @@
+import sys
+
+def solve():
+    try:
+        n, c, q = map(int, sys.stdin.readline().split())
+        s = sys.stdin.readline().strip()
+        
+        lengths = [0] * (c + 1)
+        operations = [0] * c
+        
+        lengths[0] = n
+        
+        for i in range(c):
+            l, r = map(int, sys.stdin.readline().split())
+            operations[i] = (l, r)
+            appended_len = r - l + 1
+            lengths[i+1] = lengths[i] + appended_len
+        
+        for _ in range(q):
+            k = int(sys.stdin.readline())
+            
+            for i in range(c - 1, -1, -1):
+                prev_len = lengths[i]
+                
+                if k > prev_len:
+                    l_op, r_op = operations[i]
+                    offset_in_appended = k - prev_len
+                    k = l_op + offset_in_appended - 1
+            
+            print(s[k - 1])
+            
+    except (IOError, ValueError):
+        pass
+
+def main():
+    try:
+        t = int(sys.stdin.readline())
+        for _ in range(t):
+            solve()
+    except (IOError, ValueError):
+        pass
+
+if __name__ == "__main__":
+    main()
